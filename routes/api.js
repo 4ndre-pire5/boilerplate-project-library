@@ -1,11 +1,3 @@
-/*
-*
-*
-*       Complete the API routing below
-*       
-*       
-*/
-
 'use strict';
 const Book = require('../models/schema');
 
@@ -54,11 +46,17 @@ module.exports = function (app) {
       }
     })
 
-    .delete(function(req, res){
-      //if successful response will be 'complete delete successful'
+    .delete(async function(req, res){
+      try {
+        await Book.deleteMany({});
+
+        return res.json({ result: 'complete delete sucessful' });
+
+      } catch (error) {
+        console.error(error);
+        return res.json({ error: 'could not delete all books' });
+      }
     })
-
-
 
   app.route('/api/books/:id')
     .get(async function (req, res){
@@ -112,13 +110,25 @@ module.exports = function (app) {
         
       } catch (error) {
         console.error(error);
-        res.send({ error: 'could not add comment' });
+        res.send({ error: 'no book exists' });
       }
     })
     
-    .delete(function(req, res){
-      let bookid = req.params.id;
-      //if successful response will be 'delete successful'
+    .delete(async function(req, res){
+      const { id } = req.params;
+
+      if (!id) return res.json({ error: 'no book exists' });
+
+      try {
+        const deleted = await Book.findByIdAndDelete(id);
+
+        if(!deleted) return res.json({ error: 'coul not delete' });
+        return res.json({ result: 'delete sucessful' });
+
+      } catch (error) {
+        console.error(error);
+        return res.json({ error: 'no book exists' });
+      }
     });
   
 };
