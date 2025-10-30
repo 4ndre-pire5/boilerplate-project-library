@@ -23,7 +23,7 @@ module.exports = function (app) {
         
       } catch (error) {
         console.error(error);
-        res.status(500).send('could not create a book');
+        return res.status(500).send('could not create a book');
       }
     })
 
