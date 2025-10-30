@@ -9,7 +9,7 @@ module.exports = function (app) {
       const { title } = req.body;
 
       if (!title) {
-        return res.send({ error: 'missing required field title' });
+        return res.send('missing required field title');
       }
 
       try {
@@ -23,7 +23,7 @@ module.exports = function (app) {
         
       } catch (error) {
         console.error(error);
-        res.status(500).send({ error: 'could not create a book' });
+        res.status(500).send('could not create a book');
       }
     })
 
@@ -42,7 +42,7 @@ module.exports = function (app) {
         res.json(formattedBooks);
       } catch (error) {
         console.error(error);
-        res.status(500).send({ error: 'error fetching a book' });
+        res.status(500).send('error fetching a book');
       }
     })
 
@@ -77,7 +77,7 @@ module.exports = function (app) {
 
       } catch (error) {
         console.error(error);
-        res.status(500).send({ error: 'error fetching a book' });
+        res.status(500).send('error fetching a book');
       }
 
     })
@@ -87,7 +87,7 @@ module.exports = function (app) {
       const { comment } = req.body;
 
       if (!comment) {
-        return res.send({ error: 'missing required field comment' });
+        return res.send('missing required field comment');
       }
 
       try {
@@ -110,7 +110,7 @@ module.exports = function (app) {
         
       } catch (error) {
         console.error(error);
-        res.send({ error: 'no book exists' });
+        res.send('no book exists');
       }
     })
     
