@@ -49,7 +49,8 @@ module.exports = function (app) {
 
         res.json(formattedBooks);
       } catch (error) {
-        
+        console.error(error);
+        res.status(500).send({ error: 'error fetching a book' });
       }
     })
 
@@ -60,15 +61,59 @@ module.exports = function (app) {
 
 
   app.route('/api/books/:id')
-    .get(function (req, res){
-      let bookid = req.params.id;
-      //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
+    .get(async function (req, res){
+      const { id } = req.params;
+
+      try {
+        const book = await Book.findById(id);
+
+        if (!book) {
+          return res.send('no book exists');
+        }
+
+        res.json({
+          _id: book._id,
+          title: book.title,
+          comments: book.comments
+        });
+
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'error fetching a book' });
+      }
+
     })
     
-    .post(function(req, res){
-      let bookid = req.params.id;
-      let comment = req.body.comment;
-      //json res format same as .get
+    .post(async function(req, res){
+      const { id } = req.params;
+      const { comment } = req.body;
+
+      if (!comment) {
+        return res.send({ error: 'missing required field comment' });
+      }
+
+      try {
+
+        const book = await Book.findById(id);
+
+        if (!book) return res.send('no book exists');
+
+        book.comments.push(comment);
+        await book.save();
+
+        //const commentsObject = Object.assign({}, book.comments);
+
+        res.json({
+          _id: book._id,
+          title: book.title,
+          comments: book.comments,
+          commentcount: book.comments.length
+        })
+        
+      } catch (error) {
+        console.error(error);
+        res.send({ error: 'could not add comment' });
+      }
     })
     
     .delete(function(req, res){
