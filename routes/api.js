@@ -50,7 +50,7 @@ module.exports = function (app) {
       try {
         await Book.deleteMany({});
 
-        return res.send('complete delete sucessful');
+        return res.send('complete delete successful');
 
       } catch (error) {
         console.error(error);
@@ -123,7 +123,7 @@ module.exports = function (app) {
         const deleted = await Book.findByIdAndDelete(id);
 
         if(!deleted) return res.send('could not delete');
-        return res.send('delete sucessful');
+        return res.send('delete successful');
 
       } catch (error) {
         console.error(error);
