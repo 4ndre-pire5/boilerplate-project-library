@@ -117,18 +117,17 @@ module.exports = function (app) {
     .delete(async function(req, res){
       const { id } = req.params;
 
-      if (!id) return res.send('no book exists');
-
       try {
         const deleted = await Book.findByIdAndDelete(id);
 
         if(!deleted) return res.send('could not delete');
+        
         return res.send('delete successful');
 
       } catch (error) {
         console.error(error);
         return res.send('no book exists');
       }
-    });
+    })
   
 };
