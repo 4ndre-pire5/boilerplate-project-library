@@ -50,11 +50,11 @@ module.exports = function (app) {
       try {
         await Book.deleteMany({});
 
-        return res.json({ result: 'complete delete sucessful' });
+        return res.send('complete delete sucessful');
 
       } catch (error) {
         console.error(error);
-        return res.json({ error: 'could not delete all books' });
+        return res.send('could not delete all books');
       }
     })
 
@@ -117,17 +117,17 @@ module.exports = function (app) {
     .delete(async function(req, res){
       const { id } = req.params;
 
-      if (!id) return res.json({ error: 'no book exists' });
+      if (!id) return res.send('no book exists');
 
       try {
         const deleted = await Book.findByIdAndDelete(id);
 
-        if(!deleted) return res.json({ error: 'coul not delete' });
-        return res.json({ result: 'delete sucessful' });
+        if(!deleted) return res.send('could not delete');
+        return res.send('delete sucessful');
 
       } catch (error) {
         console.error(error);
-        return res.json({ error: 'no book exists' });
+        return res.send('no book exists');
       }
     });
   
